@@ -7,7 +7,7 @@ namespace yananob\my_gcptools;
 use Psr\Http\Message\ServerRequestInterface;
 use CloudEvents\V1\CloudEventInterface;
 
-final class Utils
+final class GcpUtils
 {
     public function __construct()
     {
