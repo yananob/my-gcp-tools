@@ -1,10 +1,12 @@
 {
     "name": "yanai/my_gcptools",
     "type": "library",
+    "require": {
+        "google/cloud-functions-framework": "^1.3"
+    },
     "autoload": {
         "psr-4": {
-            "Yanai\\MyGcptools\\": "src/"
+            "yanai\\my_gcptools\\": "src/"
         }
-    },
-    "require": {}
+    }
 }
