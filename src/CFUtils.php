@@ -23,23 +23,40 @@ final class CFUtils
         return ($event->getId() === "9999999999");
     }
 
-    public static function getBasePath(bool $isLocal, ServerRequestInterface $request): string
+    /**
+     * @param bool $isLocal
+     * @param ServerRequestInterface $request
+     * @return string
+     */
+    public static function getBasePath(bool $isLocal, $request): string
     {
         $urlElems = self::__getUrlElements($isLocal, $request);
-        return "/" . $urlElems["K_SERVICE"];
+        return $urlElems["path"];
     }
 
-    public static function getBaseUrl(bool $isLocal, ServerRequestInterface $request): string
+    /**
+     * @param bool $isLocal
+     * @param ServerRequestInterface $request
+     * @return string
+     */
+    public static function getBaseUrl(bool $isLocal, $request): string
     {
         $urlElems = self::__getUrlElements($isLocal, $request);
-        $port = ":" . $urlElems["port"] ? (in_array("port", $urlElems)) : "";
-        return $urlElems["scheme"] . "://" . $urlElems["host"] . ":" . $port . "/" . $urlElems["K_SERVICE"];
+        $port = (!empty($urlElems["port"]) ? (":" . $urlElems["port"]) : "");
+        return $urlElems["scheme"] . "://" . $urlElems["host"] . $port . $urlElems["path"];
     }
 
-    private static function __getUrlElements(bool $isLocal, ServerRequestInterface $request): array
+    /**
+     * @param bool $isLocal
+     * @param ServerRequestInterface $request
+     * @return array
+     */
+    private static function __getUrlElements(bool $isLocal, $request): array
     {
+        $params = $request->getServerParams();
         $protocol = $isLocal ? "http" : "https";
-        $fullUrl = "{$protocol}://{$request->getServerParams()['HTTP_HOST']}{$request->getServerParams()['REQUEST_URI']}";
+        $path = "/" . (array_key_exists('K_SERVICE', $params) ? $params["K_SERVICE"] : "");
+        $fullUrl = "{$protocol}://{$params['HTTP_HOST']}{$path}";
         return parse_url($fullUrl);
     }
 }
