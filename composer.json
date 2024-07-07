@@ -1,5 +1,6 @@
 {
     "name": "yananob/my_gcptools",
+    "description": "My GCP-related tools",
     "type": "library",
     "require": {
         "google/cloud-functions-framework": "^1.3"
