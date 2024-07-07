@@ -26,13 +26,14 @@ final class CFUtils
     public static function getBasePath(bool $isLocal, ServerRequestInterface $request): string
     {
         $urlElems = self::__getUrlElements($isLocal, $request);
-        return $urlElems["path"];
+        return "/" . $urlElems["K_SERVICE"];
     }
 
     public static function getBaseUrl(bool $isLocal, ServerRequestInterface $request): string
     {
         $urlElems = self::__getUrlElements($isLocal, $request);
-        return $urlElems["scheme"] . "://" . $urlElems["host"] . ":" . $urlElems["port"] . $urlElems["path"];
+        $port = ":" . $urlElems["port"] ? (in_array("port", $urlElems)) : "";
+        return $urlElems["scheme"] . "://" . $urlElems["host"] . ":" . $port . "/" . $urlElems["K_SERVICE"];
     }
 
     private static function __getUrlElements(bool $isLocal, ServerRequestInterface $request): array
