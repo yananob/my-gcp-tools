@@ -35,7 +35,7 @@ final class CFUtils
         return $urlElems["scheme"] . "://" . $urlElems["host"] . ":" . $urlElems["port"] . $urlElems["path"];
     }
 
-    private static function __getUrlElements(bool $isLocal, , ServerRequestInterface $request): array
+    private static function __getUrlElements(bool $isLocal, ServerRequestInterface $request): array
     {
         $protocol = $isLocal ? "http" : "https";
         $fullUrl = "{$protocol}://{$request->getServerParams()['HTTP_HOST']}{$request->getServerParams()['REQUEST_URI']}";

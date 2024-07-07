@@ -8,5 +8,9 @@
         "psr-4": {
             "yananob\\my_gcptools\\": "src/"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.2",
+        "phpstan/phpstan": "^1.11"
     }
 }
