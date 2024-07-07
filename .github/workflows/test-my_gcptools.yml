@@ -1,7 +1,7 @@
 name: Run test for my_gcptools
 
 env:
-  target: src
+  target: .
 
 on:
   pull_request:
