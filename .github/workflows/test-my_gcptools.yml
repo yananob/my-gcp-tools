@@ -6,10 +6,10 @@ env:
 on:
   pull_request:
     types: [opened, reopened, synchronize]
-    paths:
-      - 'src/**'
-      - 'tests/**'
-      - '.github/workflows/test-my-gcp-tools.yml'
+    # paths:
+    #   - 'src/**'
+    #   - 'tests/**'
+    #   - '.github/workflows/test-my-gcp-tools.yml'
   push:
     branches: main
     paths:
