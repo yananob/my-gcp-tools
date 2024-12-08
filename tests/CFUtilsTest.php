@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use yananob\my-gcp-tools\CFUtils;
+use yananob\MyGcpTools\CFUtils;
 
 class MockServerRequestInterface
 {

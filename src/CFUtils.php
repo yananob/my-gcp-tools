@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace yananob\my-gcp-tools;
+namespace yananob\MyGcpTools;
 
 use Psr\Http\Message\ServerRequestInterface;
 use CloudEvents\V1\CloudEventInterface;
