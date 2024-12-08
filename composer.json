@@ -1,5 +1,5 @@
 {
-    "name": "yananob/my_gcptools",
+    "name": "yananob/my-gcp-tools",
     "description": "My GCP-related tools",
     "type": "library",
     "require": {
@@ -7,7 +7,7 @@
     },
     "autoload": {
         "psr-4": {
-            "yananob\\my_gcptools\\": "src/"
+            "yananob\\my-gcp-tools\\": "src/"
         }
     },
     "require-dev": {

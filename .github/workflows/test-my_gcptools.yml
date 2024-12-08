@@ -1,4 +1,4 @@
-name: Run test for my_gcptools
+name: Run test for my-gcp-tools
 
 env:
   target: .
@@ -9,13 +9,13 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
-      - '.github/workflows/test-my_gcptools.yml'
+      - '.github/workflows/test-my-gcp-tools.yml'
   push:
     branches: main
     paths:
       - 'src/**'
       - 'tests/**'
-      - '.github/workflows/test-my_gcptools.yml'
+      - '.github/workflows/test-my-gcp-tools.yml'
   schedule:
     - cron:  '01 21 * * 5'
   workflow_dispatch:
