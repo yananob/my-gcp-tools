@@ -24,6 +24,11 @@ class MockServerRequestInterface
 
 final class CFUtilsTest extends TestCase
 {
+    public function testIsTestingEnv(): void
+    {
+        $this->assertSame(true, CFUtils::isTestingEnv());
+    }
+
     public static function providerGetBasePath(): array
     {
         return [

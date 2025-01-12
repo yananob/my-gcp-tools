@@ -23,6 +23,15 @@ final class CFUtils
         return ($event->getId() === "9999999999");
     }
 
+    public static function isTestingEnv(): bool
+    {
+        $funcName = getenv('FUNCTION_NAME');
+        if (is_bool($funcName)) {
+            return true;
+        }
+        return str_contains($funcName, "test");
+    }
+
     /**
      * @param bool $isLocal
      * @param ServerRequestInterface $request
