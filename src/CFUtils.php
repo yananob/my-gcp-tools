@@ -23,10 +23,16 @@ final class CFUtils
         return ($event->getId() === "9999999999");
     }
 
+    public static function getFunctionName(string $defaultName = ''): string
+    {
+        $funcName = getenv('K_SERVICE');
+        return is_bool($funcName) ? $defaultName : $funcName;
+    }
+
     public static function isTestingEnv(): bool
     {
-        $funcName = getenv('FUNCTION_NAME');
-        if (is_bool($funcName)) {
+        $funcName = self::getFunctionName('');
+        if (empty($funcName)) {
             return true;
         }
         return str_contains($funcName, "test");
