@@ -9,9 +9,7 @@ use CloudEvents\V1\CloudEventInterface;
 
 final class CFUtils
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public static function isLocalHttp(ServerRequestInterface $request): bool
     {
@@ -73,5 +71,35 @@ final class CFUtils
         $path = "/" . (array_key_exists('K_SERVICE', $params) ? $params["K_SERVICE"] : "");
         $fullUrl = "{$protocol}://{$params['HTTP_HOST']}{$path}";
         return parse_url($fullUrl);
+    }
+
+    /**
+     * リクエストからGET・POSTフォーム・JSONペイロードをマージして取得する
+     *
+     * @param Psr\Http\Message\ServerRequestInterface $request
+     * @return array
+     */
+    function getMergedRequestParams(ServerRequestInterface $request): array
+    {
+        // Content-Typeチェック
+        $contentType = $request->getHeaderLine('Content-Type');
+        // フォーム or JSONのボディパラメータ
+        $bodyParams = [];
+        if (stripos($contentType, 'application/json') !== false) {
+            // JSONなら、生ボディをパース
+            $rawBody = (string) $request->getBody();
+            $bodyParams = json_decode($rawBody, true) ?? [];
+        } elseif (
+            stripos($contentType, 'application/x-www-form-urlencoded') !== false ||
+            stripos($contentType, 'multipart/form-data') !== false
+        ) {
+            // フォームデータなら、パース済みボディを取得
+            $bodyParams = (array) $request->getParsedBody();
+        } else {
+            throw new \InvalidArgumentException("Unsupported Content-Type: {$contentType}");
+        }
+
+        // マージ（後勝ち）
+        return array_merge((array)$request->getQueryParams(), $bodyParams);
     }
 }
