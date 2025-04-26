@@ -76,7 +76,7 @@ final class CFUtils
     /**
      * リクエストからGET・POSTフォーム・JSONペイロードをマージして取得する
      *
-     * @param Psr\Http\Message\ServerRequestInterface $request
+     * @param ServerRequestInterface $request
      * @return array
      */
     public static function getMergedRequestParams(ServerRequestInterface $request): array
