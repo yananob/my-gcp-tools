@@ -95,8 +95,8 @@ final class CFUtils
         ) {
             // フォームデータなら、パース済みボディを取得
             $bodyParams = (array) $request->getParsedBody();
-        } else {
-            throw new \InvalidArgumentException("Unsupported Content-Type: {$contentType}");
+            // } else {
+            //     throw new \InvalidArgumentException("Unsupported Content-Type: {$contentType}");
         }
 
         // マージ（後勝ち）
