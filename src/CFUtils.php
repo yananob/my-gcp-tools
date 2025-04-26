@@ -79,7 +79,7 @@ final class CFUtils
      * @param Psr\Http\Message\ServerRequestInterface $request
      * @return array
      */
-    function getMergedRequestParams(ServerRequestInterface $request): array
+    public static function getMergedRequestParams(ServerRequestInterface $request): array
     {
         // Content-Typeチェック
         $contentType = $request->getHeaderLine('Content-Type');
