@@ -1,4 +1,7 @@
 {
+  "//": "これはFirebaseおよびGoogle Cloud Platformサービスアカウントキーのサンプルファイルです。",
+  "//": "実際のプロジェクトで使用する際には、これらのプレースホルダをご自身のプロジェクトの値に置き換えてください。",
+  "//": "このファイルは通常、Firebaseプロジェクト設定からダウンロードでき、機密情報を含みますので取り扱いに注意してください。",
   "type": "service_account",
   "project_id": "{PROJECT_ID}",
   "private_key_id": "{PRIVATE_KEY_ID}",
