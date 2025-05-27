@@ -1,69 +1,92 @@
+# GitHub Actions ワークフロー名
 name: Run test for my-gcp-tools
 
+# 環境変数 (ワークフロー全体で利用可能)
 env:
-  target: .
+  target: . # ターゲットディレクトリ (現状はルート)
 
+# ワークフローのトリガー設定
 on:
+  # プルリクエスト時 (開いた時、再開した時、同期した時)
   pull_request:
     types: [opened, reopened, synchronize]
-    # paths:
+    # paths: # 特定のパスに変更があった場合のみ実行する (現在はコメントアウト)
     #   - 'src/**'
     #   - 'tests/**'
     #   - '.github/workflows/test-my-gcp-tools.yml'
+  # mainブランチへのプッシュ時
   push:
     branches: main
-    # paths:
+    # paths: # 特定のパスに変更があった場合のみ実行する (現在はコメントアウト)
     #   - 'src/**'
     #   - 'tests/**'
     #   - '.github/workflows/test-my-gcp-tools.yml'
+  # スケジュール実行 (cron形式: 毎週金曜 21:01 UTC)
   schedule:
     - cron:  '01 21 * * 5'
+  # 手動実行 (GitHub ActionsのUIから)
   workflow_dispatch:
 
+# ワークフロー内の全ジョブのデフォルト設定
 defaults:
   run:
-    working-directory: .
+    working-directory: . # コマンド実行時のワーキングディレクトリをルートに設定
 
+# ワークフローが必要とするパーミッション
 permissions:
-  contents: read
+  contents: read # リポジトリのコンテンツの読み取り権限を許可 (actions/checkout@v4 などで必要)
 
+# ジョブの定義
 jobs:
+  # 'build' という名前のジョブ
   build:
+    # ジョブを実行するランナーの種類 (最新のUbuntu)
     runs-on: ubuntu-latest
 
+    # ジョブのステップ
     steps:
+    # 1. リポジトリのコードをチェックアウト
     - uses: actions/checkout@v4
 
-    - name: Set up PHP 8.2
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: "8.2"
-        extensions: grpc
+    # 2. PHP環境のセットアップ
+    - name: Set up PHP 8.2 # ステップ名 (分かりやすい名前を付ける)
+      uses: shivammathur/setup-php@v2 # 使用するAction
+      with: # Actionへの入力パラメータ
+        php-version: "8.2" # PHPのバージョン指定
+        extensions: grpc # インストールするPHP拡張 (grpc)
 
+    # 3. composer.json と composer.lock の妥当性検証
     - name: Validate composer.json and composer.lock
-      run: composer validate
+      run: composer validate # 実行するコマンド
 
+    # 4. 現在のディレクトリを取得 (キャッシュパスの指定などで使用)
     - name: Get current directory
-      id: current_dir
-      run: echo "CURRENT_DIR=$(pwd)" >> $GITHUB_OUTPUT
+      id: current_dir # このステップのID (他のステップから出力を参照する際に使用)
+      run: echo "CURRENT_DIR=$(pwd)" >> $GITHUB_OUTPUT # カレントディレクトリをGITHUB_OUTPUTに追記
 
+    # 5. Composerのパッケージをキャッシュ
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v4
       with:
-        path: ${{ steps.current_dir.outputs.CURRENT_DIR }}/vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
+        path: ${{ steps.current_dir.outputs.CURRENT_DIR }}/vendor # キャッシュするディレクトリ (vendorディレクトリ)
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }} # キャッシュキー (OS, PHPバージョン, composer.lockのハッシュで生成)
+        restore-keys: | # プライマリキーに一致するキャッシュがない場合の復元キー
           ${{ runner.os }}-php-
 
+    # 6. 依存関係のインストール
     - name: Install dependencies
+      # --prefer-dist: zipファイルを優先してダウンロード (ビルド時間を短縮できる場合がある)
+      # --no-progress: プログレスバーを表示しない (CI環境では不要)
       run: composer install --prefer-dist --no-progress
 
+    # (コメントアウト) 設定ファイルの作成ステップの例
     # - name: Create config_*.json
     #   run: |
     #     pwd
     #     cp -v configs_sample/config_line.json.sample configs/config_line.json
     #     cp -v configs_sample/config_pocket.json.sample configs/config_pocket.json
 
+    # 7. PHPUnitによるテスト実行
     - name: Test with phpunit
-      run: bash tests/run_tests.sh
+      run: bash tests/run_tests.sh # tests/run_tests.sh スクリプトを実行
