@@ -54,7 +54,6 @@ final class CFUtils
     public static function getFunctionName(string $defaultName = ''): string
     {
         $funcName = getenv('K_SERVICE');
-        // getenv() は失敗した場合に false を返すことがあるため、is_boolでチェック
         return is_bool($funcName) ? $defaultName : $funcName;
     }
 
@@ -134,27 +133,19 @@ final class CFUtils
      */
     public static function getMergedRequestParams(ServerRequestInterface $request): array
     {
-        // Content-Typeヘッダーを取得
         $contentType = $request->getHeaderLine('Content-Type');
 
-        // ボディパラメータを格納する配列を初期化
         $bodyParams = [];
         if (stripos($contentType, 'application/json') !== false) {
-            // Content-Typeが 'application/json' の場合
-            // リクエストボディを生文字列として取得し、JSONデコードする
             $rawBody = (string) $request->getBody();
-            $bodyParams = json_decode($rawBody, true) ?? []; // デコード失敗時は空配列
+            $bodyParams = json_decode($rawBody, true) ?? [];
         } elseif (
             stripos($contentType, 'application/x-www-form-urlencoded') !== false ||
             stripos($contentType, 'multipart/form-data') !== false
         ) {
-            // Content-Typeがフォームデータ (x-www-form-urlencoded または multipart/form-data) の場合
-            // PSR-7のgetParsedBody()でパース済みのボディを取得
             $bodyParams = (array) $request->getParsedBody();
         }
 
-        // GETクエリパラメータとボディパラメータをマージ
-        // array_mergeの仕様により、後の配列の同じキーの値で上書きされる
         return array_merge((array)$request->getQueryParams(), $bodyParams);
     }
 }

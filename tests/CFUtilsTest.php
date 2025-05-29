@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-// オートローダーの読み込み。通常はPHPUnitのブートストラッププロセスやComposerが処理します。
 // require_once __DIR__ . '/../vendor/autoload.php';
 
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -32,8 +31,8 @@ class MockServerRequestInterface
     public function getServerParams(): array
     {
         return [
-            "HTTP_HOST" => $this->serverParams[0], // HTTPホスト (例: "localhost", "example.com:8080")
-            "K_SERVICE" => $this->serverParams[1], // K_SERVICE 環境変数 (例: "my-function", "")
+            "HTTP_HOST" => $this->serverParams[0],
+            "K_SERVICE" => $this->serverParams[1],
         ];
     }
 }
